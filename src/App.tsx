@@ -22,10 +22,10 @@ function App() {
     ffmpeg.FS('writeFile', 'test.m4b', await fetchFile(file));
 
     // Convert to MP3
-    await ffmpeg.run('-i', 'test.m4b', '-codec:a', 'libmp3lame', '-qscale:a', '2', 'output.mp3');
+    await ffmpeg.run('-i', 'test.m4b', '-codec:a', 'libmp3lame', '-qscale:a', '2', 'input.mp3');
 
     // Split the MP3
-    await ffmpeg.run('-i', 'output.mp3', '-f', 'segment', '-segment_time', '600', '-c', 'copy', 'out%03d.mp3');
+    await ffmpeg.run('-i', 'input.mp3', '-f', 'segment', '-segment_time', '600', '-c', 'copy', 'out%03d.mp3');
 
     // Create a new JSZip instance
     const zip = new JSZip();
