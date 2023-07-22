@@ -1,5 +1,6 @@
 {
   "name": "chunk-audio",
+  "homepage": "https://briansunter.github.io/chunk-audio",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
