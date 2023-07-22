@@ -41,6 +41,9 @@ dependencies:
   jszip:
     specifier: ^3.10.1
     version: 3.10.1
+  mespeak:
+    specifier: ^2.0.2
+    version: 2.0.2
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -6938,6 +6941,10 @@ packages:
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+    dev: false
+
+  /mespeak@2.0.2:
+    resolution: {integrity: sha512-vrSqilK/IXXpgPqyFQjuJLqwO6TYgVXd84hGj76F1jQ/DEBna4wjSntyTz/zlaH/6oJm8cRj50AkpKcLzQiuxQ==}
     dev: false
 
   /methods@1.1.2:
