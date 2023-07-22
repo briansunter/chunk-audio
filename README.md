@@ -21,27 +21,27 @@ Ensure Node.js and npm are installed on your system.
 1. Clone the repository:
 
     ```
-    `git clone https://github.com/briansunter/chunk-audio.git`
+    git clone https://github.com/briansunter/chunk-audio.git
     ```
 
 2. Navigate to the project directory:
 
     ```
-    `cd chunk-audio`
+    cd chunk-audio
     ```
 
 3. Install the dependencies:
 
     ```
-    `npm install`
+    npm install
     ```
 
 4. Start the application:
 
-```
-`npm start`
-```
-
+    ```
+    npm start
+    ```
+    
 Note
 ----
 
