@@ -5,8 +5,10 @@ Chunk Audio is a web-based application that leverages ffmpeg.wasm to split audio
 
 # Usage
 
-Go here to use the app online
+Go [here](https://chunk-audio.netlify.app/) to use the app in your browser.
+
 [Use App](https://chunk-audio.netlify.app/)
+
 Setup
 -----
 
