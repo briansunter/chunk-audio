@@ -33,6 +33,8 @@ export default function WaveformEditor({
   const containerRef = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const draggingCut = useRef<string | null>(null);
+  const isTouchDevice = useRef(false);
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Resize observer
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function WaveformEditor({
   const findCutNearX = useCallback((x: number): CutPoint | null => {
     const width = canvasRef.current?.clientWidth || 0;
     if (!width) return null;
-    const threshold = 8;
+    const threshold = isTouchDevice.current ? 20 : 8;
 
     for (const cut of cutPoints) {
       const cutX = (cut.time / audioFile.duration) * width;
@@ -129,6 +131,62 @@ export default function WaveformEditor({
     draggingCut.current = null;
   }, []);
 
+  const clearLongPress = useCallback(() => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  }, []);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    isTouchDevice.current = true;
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const touch = e.touches[0];
+    const x = touch.clientX - rect.left;
+    const clampedX = Math.max(0, Math.min(rect.width, x));
+    const nearCut = findCutNearX(clampedX);
+
+    if (nearCut) {
+      e.preventDefault();
+      const cutId = nearCut.id;
+      longPressTimer.current = setTimeout(() => {
+        onRemoveCut(cutId);
+        draggingCut.current = null;
+        longPressTimer.current = null;
+      }, 600);
+      draggingCut.current = cutId;
+      return;
+    }
+
+    const time = xToTime(clampedX, rect.width, audioFile.duration);
+    if (!isChunkMode && activeTool === 'blade') {
+      onAddCut(time);
+    } else {
+      onSeek(time);
+    }
+  }, [activeTool, audioFile.duration, findCutNearX, onAddCut, onSeek, onRemoveCut, isChunkMode, clearLongPress]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    clearLongPress();
+    if (!draggingCut.current) return;
+    e.preventDefault();
+
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const touch = e.touches[0];
+    const x = Math.max(0, Math.min(rect.width, touch.clientX - rect.left));
+    const time = Math.max(0.1, Math.min(audioFile.duration - 0.1, xToTime(x, rect.width, audioFile.duration)));
+    onMoveCut(draggingCut.current, time);
+  }, [audioFile.duration, onMoveCut, clearLongPress]);
+
+  const handleTouchEnd = useCallback(() => {
+    clearLongPress();
+    draggingCut.current = null;
+  }, [clearLongPress]);
+
   const cursorClass = !isChunkMode && activeTool === 'blade'
     ? 'cursor-crosshair'
     : 'cursor-pointer';
@@ -145,6 +203,9 @@ export default function WaveformEditor({
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onContextMenu={e => e.preventDefault()}
         className="rounded-lg"
       />

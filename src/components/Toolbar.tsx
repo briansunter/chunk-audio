@@ -11,7 +11,7 @@ interface Props {
 
 export default function Toolbar({ activeTool, mode, onToolChange, onModeChange }: Props) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap max-[640px]:gap-1.5">
       <ToggleGroup
         value={[activeTool]}
         onValueChange={(v) => { if (v.length > 0) onToolChange(v[0] as EditorTool); }}
@@ -31,7 +31,7 @@ export default function Toolbar({ activeTool, mode, onToolChange, onModeChange }
         </ToggleGroupItem>
       </ToggleGroup>
 
-      <Separator orientation="vertical" className="h-5" />
+      <Separator orientation="vertical" className="h-5 max-[640px]:hidden" />
 
       <ToggleGroup
         value={[mode]}

@@ -58,17 +58,20 @@ export default function TransportControls({
       </span>
 
       <div
-        className="flex-1 relative h-1.5 rounded-full bg-muted cursor-pointer group"
+        className="flex-1 relative cursor-pointer group"
         onClick={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const pct = (e.clientX - rect.left) / rect.width;
           onSeek(Math.max(0, Math.min(totalDuration, pct * totalDuration)));
         }}
       >
-        <div
-          className="absolute inset-y-0 left-0 rounded-full bg-primary/50 group-hover:bg-primary/70 transition-colors"
-          style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-        />
+        <div className="absolute -top-3 -bottom-3 left-0 right-0 max-[640px]:-top-5 max-[640px]:-bottom-5" />
+        <div className="relative h-1.5 max-[640px]:h-3 rounded-full bg-muted">
+          <div
+            className="absolute inset-y-0 left-0 rounded-full bg-primary/50 group-hover:bg-primary/70 transition-colors"
+            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+          />
+        </div>
       </div>
 
       <span className="font-mono text-[11px] text-muted-foreground/60 tabular-nums min-w-[48px] text-right">

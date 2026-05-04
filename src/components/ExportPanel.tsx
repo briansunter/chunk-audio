@@ -38,21 +38,21 @@ export default function ExportPanel({ mode, chunkDuration, onChunkDurationChange
   };
 
   return (
-    <div className="flex items-center gap-2.5 px-3 py-2">
+    <div className="flex items-center gap-2.5 px-3 py-2 max-[640px]:flex-wrap max-[640px]:gap-2 max-[640px]:py-3">
       <Badge variant="outline" className="font-mono text-[10px] uppercase">
         {mode === 'chunk' ? 'Chunk' : 'Manual'}
       </Badge>
 
       {mode === 'chunk' && (
         <>
-          <Separator orientation="vertical" className="h-5" />
-          <div className="flex items-center gap-1">
+          <Separator orientation="vertical" className="h-5 max-[640px]:hidden" />
+          <div className="flex items-center gap-1 max-[640px]:flex-wrap">
             {CHUNK_PRESETS.map((p) => (
               <Button
                 key={p.value}
                 variant={chunkDuration === p.value ? 'default' : 'ghost'}
                 size="xs"
-                className="font-mono text-[10px]"
+                className="font-mono text-[10px] max-[640px]:min-w-[44px]"
                 onClick={() => onChunkDurationChange(p.value)}
               >
                 {p.label}
@@ -64,17 +64,17 @@ export default function ExportPanel({ mode, chunkDuration, onChunkDurationChange
               max={3600}
               value={chunkDuration}
               onChange={(e) => onChunkDurationChange(Number(e.target.value))}
-              className="w-14 h-6 px-1.5 text-[10px] text-center font-mono"
+              className="w-14 h-6 px-1.5 text-[10px] text-center font-mono max-[640px]:h-[44px] max-[640px]:w-16"
             />
             <span className="text-[10px] text-muted-foreground">sec</span>
           </div>
         </>
       )}
 
-      <Separator orientation="vertical" className="h-5" />
+      <Separator orientation="vertical" className="h-5 max-[640px]:hidden" />
 
       <Select value={outputFormat} onValueChange={(v) => setOutputFormat(v as 'mp3' | 'wav' | 'ogg')}>
-        <SelectTrigger size="sm" className="h-6 w-[72px] text-[10px] font-mono">
+        <SelectTrigger size="sm" className="h-6 w-[72px] text-[10px] font-mono max-[640px]:h-[44px] max-[640px]:w-[100px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

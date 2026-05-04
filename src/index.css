@@ -253,6 +253,33 @@ body {
   .landing-title { font-size: 1.4rem; }
 }
 
+/* Mobile touch optimization */
+@media (max-width: 640px) {
+  [data-slot="button"] {
+    min-height: 44px;
+  }
+  [data-slot="button"][data-size="xs"],
+  [data-slot="button"][data-size="sm"] {
+    min-height: 44px;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  [data-slot="toggle-group-item"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .editor-workspace {
+    padding: 0.3rem 0.4rem;
+    gap: 0.25rem;
+  }
+
+  .waveform-shell {
+    min-height: 120px;
+    max-height: 38vh;
+  }
+}
+
 @theme inline {
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);

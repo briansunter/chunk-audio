@@ -3,6 +3,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -32,6 +33,7 @@ export default function SegmentTrack({
 }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
@@ -125,7 +127,7 @@ function SegmentCard({
       style={style}
       className={`
         flex items-center gap-2 rounded-lg border px-2 py-1.5
-        min-w-[90px] shrink-0 select-none transition-opacity
+        min-w-[90px] max-[640px]:min-h-[44px] max-[640px]:py-2.5 shrink-0 select-none transition-opacity
         ${interactive ? 'cursor-grab active:cursor-grabbing' : ''}
         ${segment.enabled
           ? 'border-border bg-secondary/50'
@@ -155,6 +157,7 @@ function SegmentCard({
           onClick={(e) => { e.stopPropagation(); onToggle(); }}
           className={`
             text-[8px] font-mono px-1 py-0.5 rounded cursor-pointer ml-auto
+            max-[640px]:min-w-[44px] max-[640px]:min-h-[44px] max-[640px]:text-[10px]
             transition-colors shrink-0
             ${segment.enabled
               ? 'text-primary hover:bg-primary/10'

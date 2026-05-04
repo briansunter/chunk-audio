@@ -231,7 +231,7 @@ export default function App() {
             <div className="flex flex-col gap-2.5 flex-1 min-h-0">
               <div className="bg-card border border-border rounded-lg flex-1 min-h-0 flex flex-col overflow-hidden">
                 <div className="editor-workspace flex-1 min-h-0">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
                     <div className="meta-strip">
                       <span className="meta-pill">{audioFile.name}</span>
                       <span className="meta-pill">{formatDuration(audioFile.duration)}</span>
@@ -275,9 +275,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="flex gap-2 shrink-0">
+              <div className="flex gap-2 shrink-0 max-[640px]:flex-col">
                 {effectiveSegments.length > 1 && (
-                  <div className="bg-card border border-border rounded-lg flex-1">
+                  <div className="bg-card border border-border rounded-lg flex-1 max-[640px]:w-full">
                     <SegmentTrack
                       segments={effectiveSegments}
                       segmentOrder={effectiveSegmentOrder}
@@ -287,7 +287,7 @@ export default function App() {
                   </div>
                 )}
 
-                <div className="bg-card border border-border rounded-lg shrink-0">
+                <div className="bg-card border border-border rounded-lg shrink-0 max-[640px]:w-full">
                   <ExportPanel
                     mode={mode}
                     chunkDuration={chunkDuration}
