@@ -16,7 +16,6 @@ function profileFor(format: string): FormatProfile {
 				ext: "ogg",
 				codecArgs: ["-codec:a", "libvorbis", "-qscale:a", "5"],
 			};
-		case "mp3":
 		default:
 			return {
 				ext: "mp3",

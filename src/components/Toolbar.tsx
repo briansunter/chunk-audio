@@ -1,7 +1,7 @@
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import type { EditorTool, EditorMode } from "../types";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { EditorMode, EditorTool } from "../types";
 
 interface Props {
 	activeTool: EditorTool;
@@ -44,6 +44,7 @@ export default function Toolbar({
 						strokeWidth="2"
 						strokeLinecap="round"
 						strokeLinejoin="round"
+						aria-hidden="true"
 					>
 						<path d="M3 7v6h6" />
 						<path d="M3 13a9 9 0 0 1 15.36-6.36L21 9" />
@@ -65,6 +66,7 @@ export default function Toolbar({
 						strokeWidth="2"
 						strokeLinecap="round"
 						strokeLinejoin="round"
+						aria-hidden="true"
 					>
 						<path d="M21 7v6h-6" />
 						<path d="M21 13a9 9 0 0 0-15.36-6.36L3 9" />
@@ -92,6 +94,7 @@ export default function Toolbar({
 						strokeWidth="2"
 						strokeLinecap="round"
 						strokeLinejoin="round"
+						aria-hidden="true"
 					>
 						<path d="M4 4l7 17 2.5-7.5L21 11z" />
 					</svg>
@@ -106,6 +109,7 @@ export default function Toolbar({
 						strokeWidth="2"
 						strokeLinecap="round"
 						strokeLinejoin="round"
+						aria-hidden="true"
 					>
 						<path d="M6 2l4 4-6 6 4 4 6-6 4 4" />
 						<line x1="18" y1="2" x2="22" y2="6" />

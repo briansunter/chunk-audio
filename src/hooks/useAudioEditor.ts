@@ -1,10 +1,10 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
 	AudioFile,
 	CutPoint,
-	Segment,
 	EditorTool,
 	PlaybackState,
+	Segment,
 } from "../types";
 
 const SEGMENT_COLORS = [
@@ -176,7 +176,8 @@ export function useAudioEditor(audioFile: AudioFile | null) {
 		};
 		redoStackRef.current.push(currentSnapshot);
 
-		const prev = undoStackRef.current.pop()!;
+		const prev = undoStackRef.current.pop();
+		if (!prev) return;
 		setCutPoints(prev.cutPoints);
 		setSegments(prev.segments);
 		setSegmentOrder(prev.segmentOrder);
@@ -195,7 +196,8 @@ export function useAudioEditor(audioFile: AudioFile | null) {
 		};
 		undoStackRef.current.push(currentSnapshot);
 
-		const next = redoStackRef.current.pop()!;
+		const next = redoStackRef.current.pop();
+		if (!next) return;
 		setCutPoints(next.cutPoints);
 		setSegments(next.segments);
 		setSegmentOrder(next.segmentOrder);
@@ -376,9 +378,7 @@ export function useAudioEditor(audioFile: AudioFile | null) {
 
 		const cutTimesToRemove = new Set<number>();
 		for (const seg of selectedSegs) {
-			const endCut = cuts.find(
-				(cp) => Math.abs(cp.time - seg.endTime) < 0.01,
-			);
+			const endCut = cuts.find((cp) => Math.abs(cp.time - seg.endTime) < 0.01);
 			const startCut = cuts.find(
 				(cp) => Math.abs(cp.time - seg.startTime) < 0.01,
 			);

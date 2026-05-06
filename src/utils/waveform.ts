@@ -149,10 +149,12 @@ function drawWaveformPath(
 	const count = endSample - startSample;
 	if (count <= 0) return;
 
-	const useViewport =
+	const viewport =
 		fullDuration !== undefined &&
 		viewStart !== undefined &&
-		viewDur !== undefined;
+		viewDur !== undefined
+			? { full: fullDuration, start: viewStart, dur: viewDur }
+			: null;
 
 	const topPoints: number[] = [];
 	const bottomPoints: number[] = [];
@@ -161,9 +163,9 @@ function drawWaveformPath(
 		const min = peaks[i * 2];
 		const max = peaks[i * 2 + 1];
 		let x: number;
-		if (useViewport) {
-			const sampleTime = (i / sampleCount) * fullDuration!;
-			x = ((sampleTime - viewStart!) / viewDur!) * totalWidth;
+		if (viewport) {
+			const sampleTime = (i / sampleCount) * viewport.full;
+			x = ((sampleTime - viewport.start) / viewport.dur) * totalWidth;
 		} else {
 			x = (i / sampleCount) * totalWidth;
 		}

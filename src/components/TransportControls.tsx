@@ -32,19 +32,37 @@ export default function TransportControls({
 				title={playbackState.isPlaying ? "Pause (Space)" : "Play (Space)"}
 			>
 				{playbackState.isPlaying ? (
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						aria-hidden="true"
+					>
 						<rect x="6" y="4" width="4" height="16" rx="1" />
 						<rect x="14" y="4" width="4" height="16" rx="1" />
 					</svg>
 				) : (
-					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+					<svg
+						width="16"
+						height="16"
+						viewBox="0 0 24 24"
+						fill="currentColor"
+						aria-hidden="true"
+					>
 						<polygon points="7,4 20,12 7,20" />
 					</svg>
 				)}
 			</Button>
 
 			<Button variant="ghost" size="icon-sm" onClick={onStop} title="Stop">
-				<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+				<svg
+					width="13"
+					height="13"
+					viewBox="0 0 24 24"
+					fill="currentColor"
+					aria-hidden="true"
+				>
 					<rect x="5" y="5" width="14" height="14" rx="1.5" />
 				</svg>
 			</Button>
@@ -54,11 +72,34 @@ export default function TransportControls({
 			</span>
 
 			<div
-				className="flex-1 relative cursor-pointer group"
+				role="slider"
+				tabIndex={0}
+				aria-label="Playback position"
+				aria-valuemin={0}
+				aria-valuemax={totalDuration}
+				aria-valuenow={playbackState.currentTime}
+				aria-valuetext={`${formatTime(playbackState.currentTime)} of ${formatTime(totalDuration)}`}
+				className="flex-1 relative cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 rounded-full"
 				onClick={(e) => {
 					const rect = e.currentTarget.getBoundingClientRect();
 					const pct = (e.clientX - rect.left) / rect.width;
 					onSeek(Math.max(0, Math.min(totalDuration, pct * totalDuration)));
+				}}
+				onKeyDown={(e) => {
+					const step = e.shiftKey ? 30 : 5;
+					if (e.key === "ArrowLeft") {
+						e.preventDefault();
+						onSeek(Math.max(0, playbackState.currentTime - step));
+					} else if (e.key === "ArrowRight") {
+						e.preventDefault();
+						onSeek(Math.min(totalDuration, playbackState.currentTime + step));
+					} else if (e.key === "Home") {
+						e.preventDefault();
+						onSeek(0);
+					} else if (e.key === "End") {
+						e.preventDefault();
+						onSeek(totalDuration);
+					}
 				}}
 			>
 				<div className="absolute -top-3 -bottom-3 left-0 right-0 max-[640px]:-top-5 max-[640px]:-bottom-5" />

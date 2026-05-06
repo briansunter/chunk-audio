@@ -1,21 +1,21 @@
-import { useState, useRef, useEffect } from "react";
 import {
-	DndContext,
 	closestCenter,
+	DndContext,
+	type DragEndEvent,
 	KeyboardSensor,
 	PointerSensor,
 	TouchSensor,
 	useSensor,
 	useSensors,
-	type DragEndEvent,
 } from "@dnd-kit/core";
 import {
+	horizontalListSortingStrategy,
 	SortableContext,
 	sortableKeyboardCoordinates,
-	horizontalListSortingStrategy,
 	useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useEffect, useRef, useState } from "react";
 import type { Segment } from "../types";
 import { formatTimeShort } from "../utils/formatTime";
 
@@ -272,9 +272,21 @@ function SegmentCardMobile({
 	};
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: card contains nested buttons (ON/OFF, delete) which cannot be inside a <button>; we provide button-equivalent a11y via role + tabIndex + onKeyDown.
 		<div
+			role="button"
+			tabIndex={0}
+			aria-pressed={isSelected}
+			aria-label={`${displayName}, ${formatTimeShort(duration)}`}
 			onClick={handleTap}
 			onDoubleClick={handleDoubleClick}
+			onKeyDown={(e) => {
+				if (isEditing) return;
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault();
+					handleTap();
+				}
+			}}
 			className={`
         flex items-center gap-3 rounded-xl border px-4 py-3 w-full
         select-none transition-all min-h-[56px]
@@ -329,6 +341,7 @@ function SegmentCardMobile({
 				<div className="flex items-center gap-2 shrink-0">
 					{onToggle && (
 						<button
+							type="button"
 							onClick={(e) => {
 								e.stopPropagation();
 								onToggle();
@@ -349,6 +362,7 @@ function SegmentCardMobile({
 					)}
 					{canDelete && onDelete && (
 						<button
+							type="button"
 							onClick={(e) => {
 								e.stopPropagation();
 								handleDelete();
@@ -452,8 +466,12 @@ function SegmentCardDesktop({
 	};
 
 	return (
+		// biome-ignore lint/a11y/noStaticElementInteractions: dnd-kit's {...attributes} {...listeners} spread below provides role=button, tabIndex, and keyboard handlers (Enter/Space/arrows for sortable drag) when interactive — biome can't see through the spread.
+		// biome-ignore lint/a11y/useKeyWithClickEvents: keyboard accessibility comes from dnd-kit's listeners spread.
+		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: aria-label is valid once dnd-kit's spread sets role=button.
 		<div
 			ref={interactive ? setNodeRef : undefined}
+			aria-label={`${displayName}, ${formatTimeShort(duration)}`}
 			style={style}
 			onClick={handleClick}
 			onDoubleClick={handleDoubleClick}
@@ -526,6 +544,7 @@ function SegmentCardDesktop({
 			<div className="flex flex-col items-center gap-1 ml-auto shrink-0">
 				{interactive && onToggle && (
 					<button
+						type="button"
 						onClick={(e) => {
 							e.stopPropagation();
 							onToggle();
@@ -538,6 +557,7 @@ function SegmentCardDesktop({
 				)}
 				{canDelete && onDelete && (
 					<button
+						type="button"
 						onClick={(e) => {
 							e.stopPropagation();
 							onDelete();

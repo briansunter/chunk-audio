@@ -1,27 +1,27 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { fetchFile } from "@ffmpeg/ffmpeg";
-import JSZip from "jszip";
 import { saveAs } from "file-saver";
-import Header from "./components/Header";
-import FileDropZone from "./components/FileDropZone";
-import LoadingOverlay from "./components/LoadingOverlay";
-import Toolbar from "./components/Toolbar";
-import WaveformEditor from "./components/WaveformEditor";
-import TimelineRuler from "./components/TimelineRuler";
-import TransportControls from "./components/TransportControls";
-import SegmentTrack from "./components/SegmentTrack";
+import JSZip from "jszip";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ExportPanel from "./components/ExportPanel";
-import { useFFmpeg } from "./hooks/useFFmpeg";
+import FileDropZone from "./components/FileDropZone";
+import Header from "./components/Header";
+import LoadingOverlay from "./components/LoadingOverlay";
+import SegmentTrack from "./components/SegmentTrack";
+import TimelineRuler from "./components/TimelineRuler";
+import Toolbar from "./components/Toolbar";
+import TransportControls from "./components/TransportControls";
+import WaveformEditor from "./components/WaveformEditor";
 import { useAudioDecoder } from "./hooks/useAudioDecoder";
 import { useAudioEditor } from "./hooks/useAudioEditor";
-import { extractSegments, chunkByTime } from "./utils/audioProcessing";
+import { useFFmpeg } from "./hooks/useFFmpeg";
 import type {
 	AudioFile,
 	CutPoint,
-	Segment,
 	EditorMode,
 	ExportOptions,
+	Segment,
 } from "./types";
+import { chunkByTime, extractSegments } from "./utils/audioProcessing";
 
 const SEGMENT_COLORS = [
 	"#5eead4",

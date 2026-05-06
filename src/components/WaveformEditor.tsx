@@ -1,5 +1,5 @@
-import { useRef, useEffect, useCallback, useState } from "react";
-import type { AudioFile, CutPoint, Segment, EditorTool } from "../types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { AudioFile, CutPoint, EditorTool, Segment } from "../types";
 import { drawWaveform } from "../utils/waveform";
 
 interface Props {
@@ -181,7 +181,7 @@ export default function WaveformEditor({
 			// Keep the mouse time pinned at the same X position
 			const ratio = (mouseTime - viewportStart) / viewportDuration;
 			const newStart = mouseTime - ratio * newDuration;
-			const newEnd = newStart + newDuration;
+			const _newEnd = newStart + newDuration;
 
 			// Clamp
 			const clampedStart = Math.max(
@@ -474,6 +474,7 @@ export default function WaveformEditor({
 			/>
 			{isZoomed && (
 				<button
+					type="button"
 					onClick={() => {
 						setViewportStart(0);
 						setViewportEnd(audioFile.duration);
